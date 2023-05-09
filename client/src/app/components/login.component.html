@@ -1,0 +1,32 @@
+<h1>T3ND3R</h1>
+
+    <div>
+        <h2>
+            <button type="button" [disabled]="!signUpPressed"
+            (click)="statusSwap()"> Login </button> | 
+            <button type="button" [disabled]="signUpPressed"
+            (click)="statusSwap()"> Signup </button>
+        </h2>
+
+        <div *ngIf="!signUpPressed">
+            <h2>LOGIN AND START MATCHING</h2>
+            <form [formGroup]="loginForm">
+            Email: <input type="email" formControlName="loginEmail"><br><br>
+            Password: <input type="{{ showLoginPassword ? 'text' : 'password' }}" formControlName="loginPassword">&nbsp;
+            <button (click)="toggleLoginPassword()">Show password</button><br><br>
+            <button type="button" (click)="login()" [disabled]="isLoginFormInvalid()">Login</button>
+            </form>
+        </div>
+
+        <div *ngIf="signUpPressed">
+            <h2>CREATE AN ACCOUNT NOW DONT WAIT NO MORE</h2>
+            <form [formGroup]="signupForm">
+                Email: <input type="email" formControlName="signupEmail"><br><br>
+                Password: <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="signupPassword">&nbsp;
+                <button (click)="togglePasswordVisibility()">Show password</button><br><br>
+                Confirm Password: <input type="{{ showConfirmPassword ? 'text' : 'password' }}" formControlName="signupConfirmPassword">&nbsp;
+                <button (click)="toggleConfirmPasswordVisibility()">Show Confirm password</button><br><br>
+                <button type="button" (click)="signup()" [disabled]="isSignupFormInvalid()">Signup</button>
+            </form>
+        </div>
+    </div>

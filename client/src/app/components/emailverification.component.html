@@ -1,0 +1,7 @@
+<div>
+    <form [formGroup]="form" (ngSubmit)="verify()">
+    <span>Please enter the 6 digit code (Case Sensitive) sent to your email for verification.</span><br>
+    <input type="text" maxlength="6" formControlName="codeToVerify">
+    <button type="submit" [disabled]="isFormInvalid()">Verify</button>
+    </form>
+</div>

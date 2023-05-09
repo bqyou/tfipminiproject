@@ -1,0 +1,21 @@
+<button type="button" (click)="goHome()">Home</button>
+<h3>{{swipes}} swipes left !</h3>
+<h3 *ngIf="swipes==0">Come back tomorrow</h3>
+
+<div *ngIf="match && swipes>0 && !noMatch">
+<img *ngIf="match && match.profilePic" src="{{match.profilePic}}" style="max-height:300px;
+max-width:300px;
+height:auto;
+width:auto;"><br>
+<span>{{match.displayName}}</span>&nbsp;<span>{{match.age}}</span>&nbsp;<span>{{match.gender}}</span>
+<div>
+    <button type="button" (click)="pass()">Pass</button>
+    <button type="button" (click)="yes()">Yes</button>
+</div>
+</div>
+
+<div *ngIf="noMatch">
+    <h3>No matches found</h3>
+</div>
+
+
