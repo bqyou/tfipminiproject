@@ -19,12 +19,22 @@ export interface isProfileCompleted{
     profileCompleted: boolean
 }
 
-export interface premiumAndSwipesStatus{
+export interface SwipesStatus{
     swipes: number
-    isPremium: boolean
 }
 
 export interface YesNo{
     response: string
 }
+
+export interface PaypalResponse{
+    link: string
+    paymentId: string
+}
+
+export interface PaymentStatus{
+    paymentStatus: string
+}
+
+
 

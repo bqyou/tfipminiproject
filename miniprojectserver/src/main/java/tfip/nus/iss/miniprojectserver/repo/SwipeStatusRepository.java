@@ -6,12 +6,16 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import tfip.nus.iss.miniprojectserver.models.PremiumStatus;
+import tfip.nus.iss.miniprojectserver.models.SwipeStatus;
 
 @Repository
-public interface PremiumStatusRepository extends JpaRepository<PremiumStatus, Integer> {
+public interface SwipeStatusRepository extends JpaRepository<SwipeStatus, Integer> {
     
     @Modifying
-    @Query("UPDATE PremiumStatus p SET p.swipes = p.swipes - 1 WHERE p.user.id = :userId")
+    @Query("UPDATE SwipeStatus p SET p.swipes = p.swipes - 1 WHERE p.user.id = :userId")
     void reduceSwipesByUserId(@Param("userId") Integer userId);
+
+    @Modifying
+    @Query("UPDATE SwipeStatus p SET p.swipes = p.swipes + 10 WHERE p.user.id = :userId")
+    void addSwipesByUserId(@Param("userId") Integer userId);
 }

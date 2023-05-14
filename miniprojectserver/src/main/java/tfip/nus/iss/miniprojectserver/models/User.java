@@ -41,7 +41,7 @@ public class User implements UserDetails{
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn
-    private PremiumStatus premiumStatus;
+    private SwipeStatus swipeStatus;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
     @PrimaryKeyJoinColumn

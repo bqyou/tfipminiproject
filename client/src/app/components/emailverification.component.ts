@@ -23,16 +23,34 @@ export class EmailverificationComponent implements OnInit {
     this.form = this.createForm()
   }
 
+  focusNextInput(nextInput: number) {
+    const inputSelector = `.verification-code-input input:nth-child(${nextInput})`;
+    const nextInputElement = document.querySelector(inputSelector) as HTMLInputElement;
+    nextInputElement.focus();
+  }
+
   createForm(){
     return this.fb.group({
-      codeToVerify: this.fb.control('', [Validators.required, Validators.minLength(6)])
+      // codeToVerify: this.fb.control('', [Validators.required]),
+      digit1: this.fb.control('', [Validators.required]),
+      digit2: this.fb.control('', [Validators.required]),
+      digit3: this.fb.control('', [Validators.required]),
+      digit4: this.fb.control('', [Validators.required]),
+      digit5: this.fb.control('', [Validators.required]),
+      digit6: this.fb.control('', [Validators.required])
     })
   }
 
   async verify(){
-    const codeToVerify = this.form.value['codeToVerify']
-    console.log(codeToVerify)
-    if (codeToVerify != this.code){
+    // const codeToVerify = this.form.value['codeToVerify']
+    const codeToVerify2 = this.form.value['digit1'] +
+                          this.form.value['digit2'] +
+                          this.form.value['digit3'] +
+                          this.form.value['digit4'] +
+                          this.form.value['digit5'] +
+                          this.form.value['digit6'] 
+    console.log(codeToVerify2)
+    if (codeToVerify2 != this.code){
       alert('Incorrect code entered')
       this.form.reset()
     } else {

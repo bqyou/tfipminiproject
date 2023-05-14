@@ -12,7 +12,7 @@ import { OperationsService } from '../service/operations.service';
 })
 export class LoginComponent implements OnInit{
 
-  signUpPressed = false
+  signUpPressed = true
   loginForm !: FormGroup
   signupForm !: FormGroup
   showPassword: boolean = false
@@ -80,8 +80,6 @@ export class LoginComponent implements OnInit{
   }
 
   async login(){
-    console.log(this.loginForm.value['loginEmail'])
-    console.log(this.loginForm.value['loginPassword'])
     const request: LoginRequest = {
       email: this.loginForm.value['loginEmail'],
       password: this.loginForm.value['loginPassword']
@@ -131,6 +129,23 @@ export class LoginComponent implements OnInit{
 
   isSignupFormInvalid(){
     return this.signupForm.invalid
+  }
+
+  async forgetPassword(){
+    const request: LoginRequest = {
+      email: this.loginForm.value['loginEmail'],
+      password: ''
+    }
+    const confirmation = confirm('Do you want to reset your password? The new password will be sent to ' + request.email)
+    if (confirmation){
+      const response = await this.authenticationService.resetPassword(request)
+    if (response==1){
+      alert('New password sent to ' + request.email)
+    } else {
+      alert('Email not found')
+    }
+    this.loginForm.reset()
+    }    
   }
 
 }

@@ -18,10 +18,24 @@ export interface Match {
     gender: string
     preference: string
     profilePic: string
-    age: number
+    age: number | null
 }
 
 export interface TextMatch {
     id: number
     displayName: string
+}
+
+export interface Messages {
+    senderId: number
+    receiverId: number
+    message: string
+}
+
+export interface PaymentOrder{
+    price: number
+    currency: string
+    method: string
+    intent: string
+    description: string
 }

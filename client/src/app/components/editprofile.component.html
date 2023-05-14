@@ -1,64 +1,65 @@
-<button type="button" (click)="goHome()">Home</button>
 
-<h2>Edit your profile</h2>
-
-<div>
-    <form [formGroup]="form" (ngSubmit)="submitInfo()">
-        <table>
-            <tr>
-                <td>
-                    Display name:
-                </td>
-                <td>
-                    <input type="text" maxlength="25" formControlName="displayName">
-                </td>
-                <td>
-                  <div *ngIf="form.get('displayName')?.dirty && form.get('displayName')?.invalid">
-                    Display name is required (2-25 characters)
-                  </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    Date of Birth:
-                </td>
-                <td>
-                    {{dateOfBirth}} 
-                </td>
-            </tr>
-            <tr>
-                  <td>
-                        Gender:
-                  </td>
-                  <td>
-                        {{gender.charAt(0).toUpperCase() + gender.slice(1)}}
-                  </td>
-            </tr>
-            <tr>
-                  <td>
-                        I'm looking for:
-                  </td>
-                  <select formControlName="preference">
-                        <option value="male">Men</option>
-                        <option value="female">Women</option>
-                        <option value="either">Anything Works</option>
-                  </select>
-            </tr>
-            <tr>
-                  <td>
-                        Profile pic:
-                  </td>
-                  <td>
-                        <input formControlName="file" type="file" (change)="onFileSelected($event)"><br>
-                  </td>
-            </tr>            
-        </table>
-        <div>
-            <img [src]="imageUrl" style="max-height:300px;
-            max-width:300px;
-            height:auto;
-            width:auto;"/>
+    <div class="login-form-container">
+      <div class="top-section">
+        <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+          <mat-icon>home</mat-icon>
+        </button>
+      
+        <h2>Edit your profile</h2>
       </div>
-      <button type="submit" [disabled]="form.invalid">Submit</button>
-    </form>
-</div>
+      
+      <form [formGroup]="form" (ngSubmit)="submitInfo()">
+        <table>
+          <tr>
+            <td class="mat-cell">
+              Display name:
+            </td>
+            <td>
+              &nbsp;<input type="text" maxlength="25" formControlName="displayName">
+            </td>
+          </tr>
+          <tr>
+            <td class="mat-cell">
+              Date of Birth:
+            </td>
+            <td class="mat-cell-unchanged">
+            &nbsp;{{dateOfBirth}}
+            </td>
+          </tr>
+          <tr>
+            <td class="mat-cell">
+              Gender:
+            </td>
+            <td class="mat-cell-unchanged">
+            &nbsp;{{gender.charAt(0).toUpperCase() + gender.slice(1)}}
+            </td>
+          </tr>
+          <tr>
+            <td class="mat-cell">
+              I'm looking for:
+            </td>
+            <td>
+              &nbsp;<select class="custom-select" formControlName="preference">
+                <option value="male">Men</option>
+                <option value="female">Women</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td class="mat-cell">
+              Profile pic:
+            </td>
+            <td>
+            &nbsp;<input formControlName="file" type="file" (change)="onFileSelected($event)">
+            </td>
+          </tr>            
+        </table>
+        <div class="image-container">
+          <div class="image-wrapper">
+            <img [src]="imageUrl">
+          </div>
+        </div>
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" [matTooltip]="form.invalid ? 'Please complete the form' : 'Press to submit'">Submit</button>
+      </form>
+    </div>
+    

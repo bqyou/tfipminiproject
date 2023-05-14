@@ -18,8 +18,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "premiumstatus")
-public class PremiumStatus {
+@Table(name = "swipestatus")
+public class SwipeStatus {
 
     @Id
     @GeneratedValue
@@ -27,9 +27,7 @@ public class PremiumStatus {
 
     @Column(insertable = false, updatable = false)
     private Integer user_id;
-  
-    private Boolean isPremium;
-    
+      
     private Integer swipes;
 
     @OneToOne

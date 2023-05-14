@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Match, Profile, Signup } from '../models/models';
 import { lastValueFrom } from 'rxjs';
 import { AuthenticationResponse, Code, SQLResponse, UserID, isProfileCompleted } from '../models/response';
-import { LoginRequest, RegisterRequest } from '../models/request';
+import { ChangePasswordRequest, LoginRequest, RegisterRequest } from '../models/request';
 
 @Injectable({
   providedIn: 'root'
@@ -66,6 +66,10 @@ export class AuthenticationService {
 
   private loginUserApiUrl = '/api/auth/login'
 
+  private forgetPasswordApiUrl = '/api/auth/resetpassword'
+
+  private changePasswordApiUrl = '/api/changepassword'
+
   
 
   constructor(private http: HttpClient) { }
@@ -80,6 +84,16 @@ export class AuthenticationService {
 
   login(request: LoginRequest){
     return lastValueFrom(this.http.post<AuthenticationResponse>(this.loginUserApiUrl, request))
+  }
+
+  resetPassword(request: LoginRequest){
+    return lastValueFrom(this.http.put<number>(this.forgetPasswordApiUrl, request))
+  }
+
+  changePassword(request: ChangePasswordRequest){
+    const token = localStorage.getItem('token')
+    const header = new HttpHeaders().set('Authorization', 'Bearer ' + token)
+    return lastValueFrom(this.http.put<number>(this.changePasswordApiUrl, request, {headers:header}))
   }
 
   

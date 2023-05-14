@@ -32,7 +32,6 @@ public class VerifyEmailService {
         Boolean isEmailRegistered = userRepository.existsByEmail(tempUser.getEmail());
         if (!isEmailRegistered) {
             String verificationCode = UUID.randomUUID().toString().substring(0, 6);
-            System.out.println(verificationCode);
             TempUser temp = new TempUser();
             temp.setPassword(tempUser.getPassword());
             temp.setEmail(tempUser.getEmail());

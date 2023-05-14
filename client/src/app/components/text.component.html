@@ -1,0 +1,33 @@
+<body>
+<div class="chat-window">
+  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+    <mat-icon>home</mat-icon>
+  </button>
+    <div class="header">
+      <span>Chat with {{textMatch.displayName}}</span>
+    </div>
+    <div *ngIf="virginChat">
+      <h3>Send a pick up line or something!</h3>
+    </div>
+    <div class="message-container" *ngFor="let message of messages">
+      <div [class]="'message ' + (message.senderId === textMatch.id ? 'other-user' : 'active-user')">
+        <p>{{message.message}}</p>
+      </div>
+    </div>  
+    <div class="bottom-section">
+      <div class="textarea-wrapper">
+        <mat-form-field [style.fontSize]="fontSize" appearance="fill" style="position: relative; width:100%; height: 10%">
+          <textarea matInput
+          cdkTextareaAutosize
+          #autosize="cdkTextareaAutosize"
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          id="message-input"
+          placeholder="Type your message"
+          (keypress)="handleKeyPress($event)"
+          #messageInput></textarea>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</body>

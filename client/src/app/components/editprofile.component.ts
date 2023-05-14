@@ -61,7 +61,7 @@ export class EditprofileComponent implements OnInit{
 
   async submitInfo(){
     const match : Match = {
-      id: this.authenticationService.getUserID(),
+      id: this.authenticationService.getProfile().id,
       displayName: this.form.value['displayName'],
       dateOfBirth: this.dateOfBirth,
       gender: this.gender,

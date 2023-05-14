@@ -6,14 +6,21 @@ import { NewuserpersonalinfoComponent } from './components/newuserpersonalinfo.c
 import { HomepageComponent } from './components/homepage.component';
 import { SwipingpageComponent } from './components/swipingpage.component';
 import { EditprofileComponent } from './components/editprofile.component';
+import { TextComponent } from './components/text.component';
+import { TestComponent } from './components/test.component';
+import { ChangepasswordComponent } from './components/changepassword.component';
+import { AuthGuardService } from './service/auth-guard.service';
 
 const routes: Routes = [
-  {path: '', component: LoginComponent},
+  {path: '', component: HomepageComponent, canActivate:[AuthGuardService]},
   {path: 'emailverification', component: EmailverificationComponent},
+  {path: 'changepassword', component: ChangepasswordComponent},
   {path: 'personaldetails', component: NewuserpersonalinfoComponent},
   {path: 'homepage', component: HomepageComponent},
+  {path: 'login', component: LoginComponent},
   {path: 'swipingpage', component: SwipingpageComponent},
   {path: 'editprofile', component: EditprofileComponent},
+  {path: 'textwindow', component: TextComponent},
   {path:'**', redirectTo:'homepage', pathMatch:'full'}
 ];
 
@@ -22,3 +29,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+// 

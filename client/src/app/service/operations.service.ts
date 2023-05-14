@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Match, Profile, TextMatch } from '../models/models';
 import { lastValueFrom } from 'rxjs';
-import { SQLResponse, YesNo, isProfileCompleted, premiumAndSwipesStatus } from '../models/response';
+import { SQLResponse, YesNo, isProfileCompleted, SwipesStatus } from '../models/response';
 
 @Injectable({
   providedIn: 'root'
@@ -15,15 +15,15 @@ export class OperationsService {
 
   private getSwipeStatusApiUrl = '/api/protected/getswipestatus'
 
-  private getMyProfileApiUrl = 'api/protected/getmyprofile'
+  private getMyProfileApiUrl = '/api/protected/getmyprofile'
 
-  private updateProfileApiUrl = 'api/protected/updateprofile'
+  private updateProfileApiUrl = '/api/protected/updateprofile'
 
-  private getProfilesApiUrl = 'api/protected/getprofiles'
+  private getProfilesApiUrl = '/api/protected/getprofiles'
 
-  private swipeApiUrl = 'api/protected/swipe/'
+  private swipeApiUrl = '/api/protected/swipe/'
 
-  private getMatchesApiUrl = 'api/protected/getmatches'
+  private getMatchesApiUrl = '/api/protected/getmatches'
 
   constructor(private http: HttpClient) { }
 
@@ -48,14 +48,13 @@ export class OperationsService {
   getSwipeStatus(){
     const token = localStorage.getItem('token')
     const header = new HttpHeaders().set('Authorization', 'Bearer ' + token)
-    return lastValueFrom(this.http.get<premiumAndSwipesStatus>(this.getSwipeStatusApiUrl, {headers: header}))
+    return lastValueFrom(this.http.get<SwipesStatus>(this.getSwipeStatusApiUrl, {headers: header}))
   }
 
-  getMyProfile(userID: number){
+  getMyProfile(){
     const token = localStorage.getItem('token')
     const header = new HttpHeaders().set('Authorization', 'Bearer ' + token)
-    const params = new HttpParams().append('id', userID)
-    return lastValueFrom(this.http.get<Match>(this.getMyProfileApiUrl, {headers: header, params:params}))
+    return lastValueFrom(this.http.get<Match>(this.getMyProfileApiUrl, {headers:header}))
   }
 
   updateProfile(match: Match){
@@ -89,6 +88,8 @@ export class OperationsService {
     const header = new HttpHeaders().set('Authorization', 'Bearer ' + token)
     return lastValueFrom(this.http.get<TextMatch[]>(this.getMatchesApiUrl, {headers:header}))
   }
+
+  
 }
 
 

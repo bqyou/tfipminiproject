@@ -48,13 +48,13 @@ public class SwipeResultService {
                 listOfUserIdActiveUserLiked.add(entry.getMatchId());
             
         }
+        
         for (Integer id: listOfUserIdActiveUserLiked){
             try{
                 YesTable entry = yesTableRepository.findByActiveUserIdAndMatchId(id, activeUserId);
                 listOfMatchedIds.add(entry.getActiveUserId());
             } catch (NullPointerException ex){
-                System.out.println("no match found");
-                return listOfMatchedIds;
+                continue;
             }
         }
         return listOfMatchedIds;

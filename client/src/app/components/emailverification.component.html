@@ -1,7 +1,20 @@
-<div>
-    <form [formGroup]="form" (ngSubmit)="verify()">
-    <span>Please enter the 6 digit code (Case Sensitive) sent to your email for verification.</span><br>
-    <input type="text" maxlength="6" formControlName="codeToVerify">
-    <button type="submit" [disabled]="isFormInvalid()">Verify</button>
-    </form>
+<h1>TiiNDER</h1>
+
+<div class="login-form-container">
+    <h2>Verification</h2>
+
+    <div>
+        <form [formGroup]="form" (ngSubmit)="verify()">
+            <span>Please enter the 6-digit code (Case Sensitive) sent to your email for verification.</span><br>
+            <div class="verification-code-input">
+                <input type="text" maxlength="1" formControlName="digit1" pattern="[a-z0-9]" required (input)="focusNextInput(2)">
+                <input type="text" maxlength="1" formControlName="digit2" pattern="[a-z0-9]" required (input)="focusNextInput(3)">
+                <input type="text" maxlength="1" formControlName="digit3" pattern="[a-z0-9]" required (input)="focusNextInput(4)">
+                <input type="text" maxlength="1" formControlName="digit4" pattern="[a-z0-9]" required (input)="focusNextInput(5)">
+                <input type="text" maxlength="1" formControlName="digit5" pattern="[a-z0-9]" required (input)="focusNextInput(6)">
+                <input type="text" maxlength="1" formControlName="digit6" pattern="[a-z0-9]" required>
+            </div>
+            <button class="authenticate" type="submit" [disabled]="isFormInvalid()">Verify</button>
+        </form>
+    </div>
 </div>

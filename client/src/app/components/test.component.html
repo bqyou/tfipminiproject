@@ -1,0 +1,47 @@
+<!-- Updated HTML with centered elements -->
+
+<div class="theme-container">
+  <button mat-icon-button color="primary" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+    <mat-icon>home</mat-icon>
+  </button>
+  <h3 class="sentence">10 swipes left!</h3>
+  <h3 class="sentence" *ngIf="swipes==0">Come back tomorrow</h3>
+  <h3 *ngIf="noMatch" class="sentence">No matches found</h3>
+
+
+  <div class="theme-card-container">
+    <mat-card class="theme-card">
+      <div class="image-container">
+        <div class="image-wrapper">
+          <img src="https://e1.pxfuel.com/desktop-wallpaper/591/430/desktop-wallpaper-daenerys-targaryen-game-of-thrones-women.jpg">
+        </div>
+      </div>
+      <mat-card-footer class="theme-card-footer">
+        <mat-card-title class="theme-card-title">
+          {{ match.displayName }}&nbsp;{{ match.age }}
+          <span *ngIf="match.gender === 'female'">&#9792;</span>
+          <span *ngIf="match.gender === 'male'">&#9794;</span>
+        </mat-card-title>
+        <mat-card-subtitle>
+          Description
+        </mat-card-subtitle>
+      </mat-card-footer>
+    </mat-card>
+    <p class="sentence">
+      Interested in getting to know 
+      <span *ngIf="match.gender === 'female'">her</span>
+      <span *ngIf="match.gender === 'male'">him</span> 
+      better?
+    </p>
+    <div class="theme-button-container">
+      <div class="button-wrapper">
+        <button type="button" class="theme-button" (click)="yes()">Yes</button>
+      </div>
+      <div class="button-wrapper">
+        <button type="button" class="theme-button" (click)="pass()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End of updated HTML with centered elements -->

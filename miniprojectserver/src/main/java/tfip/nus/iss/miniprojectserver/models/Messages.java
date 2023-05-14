@@ -1,10 +1,11 @@
 package tfip.nus.iss.miniprojectserver.models;
 
-import java.sql.Date;
+import java.time.Instant;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,12 +24,18 @@ public class Messages {
     @GeneratedValue
     private Integer id;
 
-    private Integer sender_id;
+    private Integer senderId;
 
-    private Integer receiver_id;
+    private Integer receiverId;
 
     private String message;
 
-    private Date timestamp;
+    private Instant timestamp;
+
+    @PrePersist
+    public void prePersist() {
+        timestamp = Instant.now();
+    }
+
     
 }

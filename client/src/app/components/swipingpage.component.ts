@@ -16,7 +16,7 @@ export class SwipingpageComponent implements OnInit {
 
   today: Date = new Date()
 
-  match!: Match
+  match!: Match 
 
   x:number = 0
 
@@ -34,7 +34,9 @@ export class SwipingpageComponent implements OnInit {
       this.noMatch = true
     }
     this.match = this.matches[0]
+    if (this.match){
     this.match.age = this.calculateAge(this.match.dateOfBirth)
+    }
 
   }
 

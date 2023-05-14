@@ -8,9 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,21 +22,22 @@ import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
 import tfip.nus.iss.miniprojectserver.Utils;
-import tfip.nus.iss.miniprojectserver.models.PremiumStatus;
+import tfip.nus.iss.miniprojectserver.models.SwipeStatus;
 import tfip.nus.iss.miniprojectserver.models.UserProfile;
-import tfip.nus.iss.miniprojectserver.repo.PremiumStatusRepository;
+import tfip.nus.iss.miniprojectserver.repo.SwipeStatusRepository;
 import tfip.nus.iss.miniprojectserver.service.SwipeResultService;
 import tfip.nus.iss.miniprojectserver.service.UserProfileService;
 
 @Controller
 @RequestMapping(path = "/api/protected")
+@CrossOrigin(origins = "*")
 public class SwipeController {
 
     @Autowired
     private Utils utils;
 
     @Autowired
-    private PremiumStatusRepository premiumStatusRepository;
+    private SwipeStatusRepository swipeStatusRepository;
 
     @Autowired
     private SwipeResultService swipeResultService;
@@ -53,7 +56,7 @@ public class SwipeController {
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         Integer activeUserID = utils.getIdFromHeader(jwtToken);
         Integer targetUserID = id;
-        premiumStatusRepository.reduceSwipesByUserId(activeUserID);
+        swipeStatusRepository.reduceSwipesByUserId(activeUserID);
         String response = "";
         if (yesno.equals("yes")){
             swipeResultService.insertYesTable(activeUserID, targetUserID);
@@ -78,10 +81,9 @@ public class SwipeController {
     ){
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         Integer userID = utils.getIdFromHeader(jwtToken);
-        PremiumStatus premiumStatus = premiumStatusRepository.findById(userID).get();
+        SwipeStatus swipeStatus = swipeStatusRepository.findById(userID).get();
         JsonObject jsonObject = Json.createObjectBuilder()
-                .add("swipes", premiumStatus.getSwipes())
-                .add("isPremium", premiumStatus.getIsPremium())                
+                .add("swipes", swipeStatus.getSwipes())
                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -105,7 +107,26 @@ public class SwipeController {
                                 .build();
             arrBuilder.add(json);
         }
+        
         return ResponseEntity.ok(arrBuilder.build().toString());
+    }
+
+    @PutMapping(path="/addswipes")
+    @ResponseBody
+    @Transactional
+    public ResponseEntity<String> addSwipes(
+        @RequestHeader("Authorization") String authorizationHeader
+    ){
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        Integer userID = utils.getIdFromHeader(jwtToken);
+        swipeStatusRepository.addSwipesByUserId(userID);
+        SwipeStatus swipeStatus = swipeStatusRepository.findById(userID).get();
+        JsonObject jsonObject = Json.createObjectBuilder()
+                .add("swipes", swipeStatus.getSwipes() + 10)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(jsonObject.toString());     
     }
     
     

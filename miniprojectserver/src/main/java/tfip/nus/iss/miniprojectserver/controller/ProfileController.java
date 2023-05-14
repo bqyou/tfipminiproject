@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,12 +35,15 @@ import tfip.nus.iss.miniprojectserver.service.UserProfileService;
 
 @Controller
 @RequestMapping(path = "/api/protected")
+@CrossOrigin(origins = "*")
 public class ProfileController {        
 
     private static final String BASE64_PREFIX_DECODER = "data:%s;base64,";
 
     @Autowired
     private UserProfileService userProfileService;
+
+    
 
     @Autowired
     private Utils utils;    
@@ -68,6 +73,8 @@ public class ProfileController {
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(jsonObject.toString());
     }
+
+    
 
     @PutMapping(path = "/updateprofile/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
@@ -115,10 +122,11 @@ public class ProfileController {
     @GetMapping(path="/getmyprofile")
     @ResponseBody
     public ResponseEntity<String> getMyProfile(
-        @RequestHeader("Authorization") String authorizationHeader,
-        @RequestParam Integer id
+        @RequestHeader("Authorization") String authorizationHeader
     ){
-        UserProfile userProfile = userProfileService.getMyProfile(id);
+        String jwtToken = authorizationHeader.replace("Bearer ", "");
+        Integer userID = utils.getIdFromHeader(jwtToken);
+        UserProfile userProfile = userProfileService.getMyProfile(userID);
         Date sqlDate = userProfile.getDateOfBirth();        
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         String dateString = sdf.format(sqlDate);
@@ -131,7 +139,7 @@ public class ProfileController {
         }
         String encodedString = Base64.getEncoder().encodeToString(imageData);
         JsonObject profile = Json.createObjectBuilder()
-                                .add("id", id)
+                                .add("id", userID)
                                 .add("displayName", userProfile.getDisplayName())
                                 .add("dateOfBirth", dateString)
                                 .add("gender", userProfile.getGender())

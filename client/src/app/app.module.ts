@@ -12,6 +12,12 @@ import { HomepageComponent } from './components/homepage.component';
 import { MyInterceptor } from './service/HttpInterceptors';
 import { SwipingpageComponent } from './components/swipingpage.component';
 import { EditprofileComponent } from './components/editprofile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './models/materials';
+import { TextComponent } from './components/text.component';
+import { TestComponent } from './components/test.component';
+import { ChangepasswordComponent } from './components/changepassword.component';
+
 
 @NgModule({
   declarations: [
@@ -21,13 +27,18 @@ import { EditprofileComponent } from './components/editprofile.component';
     NewuserpersonalinfoComponent,
     HomepageComponent,
     SwipingpageComponent,
-    EditprofileComponent
+    EditprofileComponent,
+    TextComponent,
+    TestComponent,
+    ChangepasswordComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    MaterialModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: MyInterceptor, multi: true }],
   bootstrap: [AppComponent]
