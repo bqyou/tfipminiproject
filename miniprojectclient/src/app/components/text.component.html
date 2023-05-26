@@ -1,0 +1,37 @@
+<div class="loading" *ngIf="isLoading">
+  <div>
+    <mat-spinner></mat-spinner>
+    <p> Please wait while the page is loading...</p>
+  </div>
+</div>
+<body *ngIf="!isLoading">
+      <mat-toolbar color="primary">
+          <button mat-icon-button color="basic" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+              <mat-icon>home</mat-icon>
+          </button>
+          <span>Chat with {{textMatch?.displayName}}</span>
+          <span class="example-spacer"></span>
+          <button mat-icon-button class="example-icon" aria-label="Example icon-button with logout icon" matTooltip="Log out"
+            (click)="logout()">
+            <mat-icon>logout</mat-icon>
+          </button>
+        </mat-toolbar>
+      
+    
+      <div class="chat-section" #chatSection #scrollMe [scrollTop]="scrollMe.scrollHeight">
+        <div class="message-container" *ngFor="let message of messages">
+            <div [class]="'message ' + (message.senderId === textMatch?.id ? 'other-user' : 'active-user')">
+                <p [innerHTML]="formatMessage(message.message)">{{message.message}}</p>
+            </div>
+        </div>
+      </div>
+    
+      <div class="bottom-section">
+        <div class="textarea-wrapper">
+            <mat-form-field  class="example-full-width" subscriptSizing="dynamic">
+              <textarea (keypress)="handleKeyPress($event)" matInput placeholder="Type something here" style="scrollbar-base-color: black;"></textarea>
+            </mat-form-field>
+            
+        </div>
+      </div>
+</body>

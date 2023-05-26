@@ -34,17 +34,17 @@ public class UserProfileService {
 
     public Integer completeProfile(MultipartFile profilePic,
     String displayName, String dateOfBirth, String gender,
-    String preference, Integer userID) throws SQLException, IOException{
+    String preference, Integer userID, String aboutMe) throws SQLException, IOException{
         Integer rowsUpdated = 0;
-        rowsUpdated = userProfileRepo.completeProfile(profilePic, displayName, dateOfBirth, gender, preference, userID);
+        rowsUpdated = userProfileRepo.completeProfile(profilePic, displayName, dateOfBirth, gender, preference, userID, aboutMe);
         return rowsUpdated;
     }
 
     public Integer updateProfile(String profilePic,
     String displayName, String dateOfBirth, String gender,
-    String preference, Integer userID) throws SQLException, IOException{
+    String preference, Integer userID, String aboutMe) throws SQLException, IOException{
         Integer rowsUpdated = 0;
-        rowsUpdated = userProfileRepo.updateProfile(profilePic, displayName, dateOfBirth, gender, preference, userID);
+        rowsUpdated = userProfileRepo.updateProfile(profilePic, displayName, dateOfBirth, gender, preference, userID, aboutMe);
         return rowsUpdated;
     }
 
@@ -57,14 +57,17 @@ public class UserProfileService {
         return userProfileRepository.findByUserId(id).get();
     }
 
-    public List<UserProfile> findByGenderAndPreference(String gender, String preference, Integer userId, Integer limit){
+    public List<UserProfile> findByUserGenderAndPreference(String gender, String preference, Integer userId, Integer limit){
         List<Integer> listOfUserIdToNotShow = new LinkedList<Integer>();
         listOfUserIdToNotShow.add(userId);
         List<Integer> listOfSeenUserId = getListOfSeenUsers(userId);
         for (Integer id: listOfSeenUserId){
             listOfUserIdToNotShow.add(id);
         }
-        return userProfileRepository.findByGenderAndPreferenceAndUserIdNotIn(gender,preference, listOfUserIdToNotShow, limit);
+        if (preference.equals("either")){
+            return userProfileRepository.findByPreferenceAndUserIdNotIn(gender, listOfUserIdToNotShow, limit);
+        }
+        return userProfileRepository.findByGenderAndPreferenceAndUserIdNotIn(preference,gender, listOfUserIdToNotShow, limit);
     }
 
     public List<UserProfile> findByUserIds(List<Integer> userIds){

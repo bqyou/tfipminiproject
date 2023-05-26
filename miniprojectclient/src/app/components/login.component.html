@@ -1,0 +1,39 @@
+<h1> FiiNDER <img src="\assets\icons\icon-128x128.png"></h1>
+<h2>Find a friend today!</h2>
+
+    <div class="login-form-container">
+        <h2>
+            <button class="password" type="button" [disabled]="!signUpPressed"
+            (click)="statusSwap()" matTooltip="Switch to login page"> Login </button>
+             | 
+            <button class="password" type="button" [disabled]="signUpPressed"
+            (click)="statusSwap()" matTooltip="Switch to signup page"> Signup </button>
+        </h2>
+
+        <div *ngIf="!signUpPressed">
+            <h2>LOGIN TO YOUR ACCOUNT</h2>
+            <form [formGroup]="loginForm">
+            Email: <input type="email" formControlName="loginEmail"><br><br>
+            Password: <input type="{{ showLoginPassword ? 'text' : 'password' }}" formControlName="loginPassword">&nbsp;
+            <button class="password"  (click)="toggleLoginPassword()">Show password</button>&nbsp;
+            <button class="password" (click)="forgetPassword()" [disabled]="loginForm.get('loginEmail')?.invalid">Forget password</button><br><br>
+            <div class="button-wrapper">
+                <button mat-raised-button color="primary" type="submit" (click)="login()" [disabled]="isLoginFormInvalid()">Login</button>
+            </div>
+            </form>
+        </div>
+
+        <div *ngIf="signUpPressed">
+            <h2>SIGNUP A NEW ACCOUNT</h2>
+            <form [formGroup]="signupForm">
+                Email: <input type="email" formControlName="signupEmail"><br><br>
+                Password: <input type="{{ showPassword ? 'text' : 'password' }}" formControlName="signupPassword" placeholder="Minimum 8 characters">&nbsp;
+                <button class="password" (click)="togglePasswordVisibility()">Show password</button><br><br>
+                Confirm Password: <input type="{{ showConfirmPassword ? 'text' : 'password' }}" formControlName="signupConfirmPassword">&nbsp;
+                <button class="password" (click)="toggleConfirmPasswordVisibility()">Show Confirm password</button><br><br>
+                <div class="button-wrapper">
+                    <button mat-raised-button color="primary" type="submit" (click)="signup()" [disabled]="isSignupFormInvalid()">Signup</button>
+                </div>
+            </form>
+        </div>
+    </div>

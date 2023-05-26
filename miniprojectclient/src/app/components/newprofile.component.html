@@ -1,0 +1,75 @@
+
+
+<div class="login-form-container">
+    <div class="top-section">
+      <h2>Complete your profile</h2>
+      </div>
+    <form [formGroup]="form" (ngSubmit)="submitInfo()">
+    
+      <table>
+        <tr>
+          <td class="mat-cell">
+            Name: 
+          </td>
+          <td class="centered-td">
+            <input type="text" maxlength="25" formControlName="displayName" placeholder="2-25 characters">
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Date of Birth: 
+          </td>
+          
+          <td class="centered-td">
+            <input type="date" style="font-size: 16px;" formControlName="dateOfBirth" [max]="minDate.toISOString().slice(0,10)" (keydown)="onKeyDown($event)"> 
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Gender: 
+          </td>
+          <td class="centered-td">
+            <select class="custom-select" formControlName="gender">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Preference: 
+          </td>
+          <td class="centered-td">
+            <select class="custom-select" formControlName="preference">
+              <option value="male">Men</option>
+              <option value="female">Women</option>
+              <option value="either">Both</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            About me: 
+          </td>
+          <td class="centered-td">            
+            <textarea rows="3" formControlName="aboutMe" placeholder="Max characters = 99" maxlength="99"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+              Profile pic:
+          </td>
+          <td class="centered-td">
+            <input formControlName="file" type="file" (change)="onFileSelected($event)">
+          </td>
+        </tr>            
+      </table>
+      <div class="image-container">
+        <div class="image-wrapper">
+          <img [src]="imageUrl">
+        </div>
+      </div>
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid" [matTooltip]="form.invalid ? 'Please complete the form': 'Press to submit'">Submit</button>
+    </form>
+  </div>
+  

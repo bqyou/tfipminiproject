@@ -37,6 +37,7 @@ public class UserProfile {
     private String preference;
     private Blob profilePic;
     private String imageType;
+    private String aboutMe;
 
     @Builder.Default
     private Boolean completed = false;

@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,23 +19,18 @@ import com.paypal.base.rest.PayPalRESTException;
 
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
+import jakarta.json.JsonObjectBuilder;
 import tfip.nus.iss.miniprojectserver.models.Order;
 import tfip.nus.iss.miniprojectserver.service.PaypalService;
 
 @Controller
-@RequestMapping("/api/protected")
-@CrossOrigin(origins = "*")
+@RequestMapping
 public class PaypalController {
 
     @Autowired
     private PaypalService paypalService;
 
-
-
-    public static final String CANCEL_URL = "/pay/cancel";
-    public static final String SUCCESS_URL = "/pay/success";
-
-    @PostMapping(path="/payment")
+    @PostMapping(path="/api/payment")
     @ResponseBody
     public ResponseEntity<String> payment(
         
@@ -46,7 +40,7 @@ public class PaypalController {
         try{
             Payment payment = paypalService.createPayment(order.getPrice(), order.getCurrency(), 
                                     order.getMethod(), order.getIntent(), order.getDescription(), 
-                                    "http://localhost:8080/api/protected"+CANCEL_URL, "http://localhost:8080/api/protected"+ SUCCESS_URL);
+                                    "https://fiinder.up.railway.app/pay/cancel", "https://fiinder.up.railway.app/pay/success");
             String paymentId = payment.getId();
             for(Links link : payment.getLinks()){
                 if (link.getRel().equals("approval_url")){
@@ -67,47 +61,47 @@ public class PaypalController {
                             .body(null);
     }
 
-    @GetMapping(value=CANCEL_URL)
-    @ResponseBody
+    @GetMapping(path="/pay/cancel")
     public ResponseEntity<String> cancel(){
-        JsonObject json = Json.createObjectBuilder()
-                                .add("response", "cancelled")
-                                .build();
         return ResponseEntity.status(HttpStatus.OK)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .body(json.toString());
+        .contentType(MediaType.APPLICATION_JSON)
+        .body("Payment failed");
     }
 
-    @GetMapping(value=SUCCESS_URL)
-    @ResponseBody
-    public ResponseEntity<String> success(@RequestParam("paymentId") String paymentId,
+    @GetMapping(path="/pay/success")
+    public ResponseEntity<String> success(
+        @RequestParam("paymentId") String paymentId,
             @RequestParam("PayerID") String payerId){
+        JsonObjectBuilder jsonBuilder = Json.createObjectBuilder();
         try{
             Payment payment = paypalService.executePayment(paymentId, payerId);
-            if (payment.getState().equals("approved")){                
+            if (payment.getState().equals("approved")){
                 return ResponseEntity.status(HttpStatus.OK)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .body("Payment made, you can close this window and go back.");
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(jsonBuilder.add("paymentStatus", "approved").build().toString());
             }
         } catch (PayPalRESTException e){
             e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.OK)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .body(null);
 
-        }        
+            return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(jsonBuilder.add("paymentStatus", "failed").build().toString());
+            
+        }
         return ResponseEntity.status(HttpStatus.OK)
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .body(null);
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(jsonBuilder.add("paymentStatus", "failed").build().toString());
     }
 
-    @GetMapping(path="/getpaymentstatus/{paymentId}")
+    @GetMapping(path="api/payment/getpaymentstatus/{paymentId}")
     @ResponseBody
     public ResponseEntity<String> getPaymentStatus(
         @PathVariable String paymentId
     ){
+
         try {
             Payment payment = paypalService.getPaymentDetails(paymentId);
+            System.out.println(payment);
             if (payment.getState().equals("approved")){
                 JsonObject json = Json.createObjectBuilder()
                                 .add("paymentStatus", "approved")
@@ -118,12 +112,12 @@ public class PaypalController {
             }
         } catch (PayPalRESTException e){
             JsonObject json = Json.createObjectBuilder()
-                                .add("paymentStatus", "rejected")
+                                .add("paymentStatus", "restexception")
                                 .build();
                 return ResponseEntity.status(HttpStatus.OK)
                             .contentType(MediaType.APPLICATION_JSON)
                             .body(json.toString());
-        }
+        }        
         JsonObject json = Json.createObjectBuilder()
                                 .add("paymentStatus", "rejected")
                                 .build();

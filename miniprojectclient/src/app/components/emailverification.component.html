@@ -1,0 +1,24 @@
+<div [ngClass]="{'loading-cursor': isLoading}">
+<h1>FiiNDER</h1>
+
+<div class="login-form-container">
+    <h2>Email Verification</h2>
+
+    <div>
+        <form [formGroup]="form" (ngSubmit)="verify()">
+            <p>Please enter the 6-digit code (Case Sensitive) sent to your email for verification.</p>
+            <div class="verification-code-input">
+                <input type="text" maxlength="1" formControlName="digit1" pattern="[a-z0-9]" required (input)="focusNextInput(2)">
+                <input type="text" maxlength="1" formControlName="digit2" pattern="[a-z0-9]" required (input)="focusNextInput(3)">
+                <input type="text" maxlength="1" formControlName="digit3" pattern="[a-z0-9]" required (input)="focusNextInput(4)">
+                <input type="text" maxlength="1" formControlName="digit4" pattern="[a-z0-9]" required (input)="focusNextInput(5)">
+                <input type="text" maxlength="1" formControlName="digit5" pattern="[a-z0-9]" required (input)="focusNextInput(6)">
+                <input type="text" maxlength="1" formControlName="digit6" pattern="[a-z0-9]" required>
+            </div>
+            <div class="button-wrapper">
+                <button mat-raised-button color="primary" type="submit" [disabled]="isFormInvalid()">Verify</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>

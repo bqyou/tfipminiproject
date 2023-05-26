@@ -2,6 +2,9 @@ package tfip.nus.iss.miniprojectserver.service;
 
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.AuthenticationException;
@@ -95,10 +98,9 @@ public class AuthenticationService {
             String newPasswordString = UUID.randomUUID().toString().substring(0, 8);
             String encodedPasswordString = passwordEncoder.encode(newPasswordString);
             repository.updatePasswordByEmail(encodedPasswordString, request.getEmail());
-            System.out.println("NEW PASSWORD >>>> " + newPasswordString);
             //email to send
-            // sendEmail(request.getEmail(), "Reset password - TiiNDER",
-            // "Your new password is %s".formatted(newPasswordString));
+            sendEmail(request.getEmail(), "Reset password - FiiNDER",
+            "Your new password is %s".formatted(newPasswordString));
             return 1;
         } 
         return 0;
@@ -126,13 +128,13 @@ public class AuthenticationService {
         return repository.findById(id).get().getEmail();
     }
 
-    // @Autowired
-    // private JavaMailSender mailSender;
-    // public void sendEmail(String to, String subject, String body) {
-    //     SimpleMailMessage message = new SimpleMailMessage();
-    //     message.setTo(to);
-    //     message.setSubject(subject);
-    //     message.setText(body);
-    //     mailSender.send(message);
-    // } 
+    @Autowired
+    private JavaMailSender mailSender;
+    public void sendEmail(String to, String subject, String body) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        mailSender.send(message);
+    } 
 }

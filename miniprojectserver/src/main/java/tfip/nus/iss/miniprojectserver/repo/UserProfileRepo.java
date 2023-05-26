@@ -23,7 +23,7 @@ public class UserProfileRepo {
 
     public static final String SQL_COMPLETE_PROFILE = """
             UPDATE profiles
-            SET date_of_birth = ?, display_name = ?, gender = ?, image_type = ?, preference = ?, profile_pic = ?, completed = ?
+            SET date_of_birth = ?, display_name = ?, gender = ?, image_type = ?, preference = ?, profile_pic = ?, about_me=?, completed = ?
             WHERE user_id = ?
             """;
 
@@ -33,7 +33,7 @@ public class UserProfileRepo {
     @Transactional
     public Integer completeProfile(MultipartFile profilePic,
             String displayName, String dateOfBirth, String gender,
-            String preference, Integer userID) throws SQLException, IOException {
+            String preference, Integer userID, String aboutMe) throws SQLException, IOException {
         Integer rowsUpdated = 0;
         String dateOfBirthStr = dateOfBirth;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -61,8 +61,9 @@ public class UserProfileRepo {
             pstmt.setString(4, imageType);
             pstmt.setString(5, preference);
             pstmt.setBinaryStream(6, is, profilePic.getSize());
-            pstmt.setBoolean(7, true);
-            pstmt.setInt(8, userID);
+            pstmt.setString(7, aboutMe);
+            pstmt.setBoolean(8, true);
+            pstmt.setInt(9, userID);
             rowsUpdated = pstmt.executeUpdate();
         } catch (SQLException | IOException e) {
             e.printStackTrace();
@@ -89,7 +90,7 @@ public class UserProfileRepo {
     @Transactional
     public Integer updateProfile(String profilePic,
             String displayName, String dateOfBirth, String gender,
-            String preference, Integer userID) throws SQLException, IOException {
+            String preference, Integer userID, String aboutMe) throws SQLException, IOException {
         Integer rowsUpdated = 0;
         String dateOfBirthStr = dateOfBirth;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
@@ -122,8 +123,9 @@ public class UserProfileRepo {
             pstmt.setString(4, imageType);
             pstmt.setString(5, preference);
             pstmt.setBlob(6, blob);
-            pstmt.setBoolean(7, true);
-            pstmt.setInt(8, userID);
+            pstmt.setString(7, aboutMe);
+            pstmt.setBoolean(8, true);
+            pstmt.setInt(9, userID);
             rowsUpdated = pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

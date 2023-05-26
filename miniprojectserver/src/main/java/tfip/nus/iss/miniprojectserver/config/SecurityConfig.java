@@ -26,7 +26,10 @@ public class SecurityConfig {
             .csrf()
             .disable()
             .authorizeHttpRequests()
-            .requestMatchers("/api/auth/**", "/api/protected/pay/**")
+            .requestMatchers("/api/auth/**", "/pay/**", "/",
+            "favicon.ico", "index.html", "/assets/**", "main.02c57eb3563fa913.js", "manifest.webmanifest",
+            "ngsw.json", "ngsw-worker.js", "polyfills.0f580d989abaafbc.js", "runtime.d26d908dedafbbd3.js",
+            "safety-worker.js", "styles.31408445b5f6e107.css", "worker-basic.min.js", "https://fiinder.up.railway.app/")
             .permitAll()
             .anyRequest()
             .authenticated()

@@ -1,0 +1,88 @@
+<div class="loading" *ngIf="isLoading">
+  <div>
+    <mat-spinner></mat-spinner>
+    <p> Please wait while the page is loading...</p>
+  </div>
+</div>
+
+
+
+<div class="login-form-container" *ngIf="!isLoading">
+    <mat-toolbar color="primary">
+      <button mat-icon-button color="basic" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+          <mat-icon>home</mat-icon>
+      </button>
+      <span>Edit Profile</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with logout icon" matTooltip="Log out"
+        (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+    
+    <form [formGroup]="form" (ngSubmit)="submitInfo()">
+      <table>
+        <tr>
+          <td class="mat-cell">
+            Display name:
+          </td>
+          <td class="centered-td">
+            <input type="text" maxlength="25" formControlName="displayName">
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Date of Birth:
+          </td>
+          <td class="mat-cell-unchanged">
+            &nbsp;&nbsp;{{dateOfBirth}}
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Gender:
+          </td>
+          <td class="mat-cell-unchanged">
+          &nbsp;&nbsp;{{gender.charAt(0).toUpperCase() + gender.slice(1)}}
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Preference:
+          </td>
+          <td class="centered-td">
+            <select class="custom-select" formControlName="preference">
+              <option value="male">Men</option>
+              <option value="female">Women</option>
+              <option value="either">Both</option>
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            About me: 
+          </td>
+          <td class="centered-td">            
+            <textarea rows="3" formControlName="aboutMe" maxlength="99"></textarea>
+          </td>
+        </tr>
+        <tr>
+          <td class="mat-cell">
+            Profile pic:
+          </td>
+          <td class="centered-td">
+          <input formControlName="file" type="file" (change)="onFileSelected($event)">
+          </td>
+        </tr>            
+      </table>
+      <div class="image-container">
+        <div class="image-wrapper">
+          <img [src]="imageUrl">
+        </div>
+      </div>
+      <div class="button-wrapper">
+      <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+  

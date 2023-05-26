@@ -56,13 +56,14 @@ public class ProfileController {
             @RequestPart String displayName,
             @RequestPart String dateOfBirth,
             @RequestPart String gender,
-            @RequestPart String preference
+            @RequestPart String preference,
+            @RequestPart String aboutMe
             ) throws SQLException {
         String jwtToken = authorizationHeader.replace("Bearer ", "");
         Integer userID = utils.getIdFromHeader(jwtToken);
         Integer rowsUpdated = 0;
         try {
-            rowsUpdated = userProfileService.completeProfile(profilePic, displayName, dateOfBirth, gender, preference, userID);
+            rowsUpdated = userProfileService.completeProfile(profilePic, displayName, dateOfBirth, gender, preference, userID, aboutMe);
         } catch (IOException e){
             e.printStackTrace();
         }        
@@ -84,13 +85,14 @@ public class ProfileController {
             @RequestPart String displayName,
             @RequestPart String dateOfBirth,
             @RequestPart String gender,
-            @RequestPart String preference
+            @RequestPart String preference,
+            @RequestPart String aboutMe
             ) throws SQLException {
         
         Integer userID = id;
         Integer rowsUpdated = 0;
         try {
-            rowsUpdated = userProfileService.updateProfile(profilePic, displayName, dateOfBirth, gender, preference, userID);
+            rowsUpdated = userProfileService.updateProfile(profilePic, displayName, dateOfBirth, gender, preference, userID, aboutMe);
         } catch (IOException e){
             e.printStackTrace();
         }        
@@ -145,6 +147,7 @@ public class ProfileController {
                                 .add("gender", userProfile.getGender())
                                 .add("preference", userProfile.getPreference())
                                 .add("profilePic", BASE64_PREFIX_DECODER.formatted(userProfile.getImageType()) + encodedString)
+                                .add("aboutMe", userProfile.getAboutMe())
                                 .build();
         return ResponseEntity.status(HttpStatus.OK)
                     .contentType(MediaType.APPLICATION_JSON)
@@ -160,7 +163,7 @@ public class ProfileController {
         Integer userID = utils.getIdFromHeader(jwtToken);
         String gender = userProfileService.getMyProfile(userID).getGender();
         String preference = userProfileService.getMyProfile(userID).getPreference();
-        List<UserProfile> profiles = userProfileService.findByGenderAndPreference(preference, gender, userID, limit);
+        List<UserProfile> profiles = userProfileService.findByUserGenderAndPreference(gender, preference, userID, limit);
         JsonArrayBuilder profileStrings = Json.createArrayBuilder();
         
         byte[] imageData = null;
@@ -182,6 +185,7 @@ public class ProfileController {
                                 .add("gender", profile.getGender())
                                 .add("preference", profile.getPreference())
                                 .add("profilePic", BASE64_PREFIX_DECODER.formatted(profile.getImageType()) + encodedString)
+                                .add("aboutMe", profile.getAboutMe())
                                 .build();
             profileStrings.add(json);
         }

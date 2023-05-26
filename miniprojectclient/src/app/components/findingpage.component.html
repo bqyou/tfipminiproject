@@ -1,0 +1,70 @@
+<div class="loading" *ngIf="isLoading">
+    <div>
+      <mat-spinner></mat-spinner>
+      <p> Please wait while the page is loading...</p>
+    </div>
+  </div>
+
+<div *ngIf="!isLoading" class="theme-container">
+    
+
+    <mat-toolbar color="primary">
+        <button mat-icon-button color="basic" aria-label="Example icon button with a home icon" type="button" (click)="goHome()">
+            <mat-icon>home</mat-icon>
+        </button>
+        <span>FiiND a friend!</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with logout icon" matTooltip="Log out"
+          (click)="logout()">
+          <mat-icon>logout</mat-icon>
+        </button>
+      </mat-toolbar>
+    
+    <h3 class="sentence">{{swipes}} FINDS left !</h3>
+    <h3 class="sentence" *ngIf="swipes==0">Come back tomorrow</h3>
+    <h3 class="sentence" *ngIf="noMatch" class="sentence">No matches found</h3>
+
+    <div class="theme-card-container" *ngIf="match && swipes>0 && !noMatch">
+        <mat-card class="theme-card">
+            <div class="image-container">
+                <div class="image-wrapper">
+                    <img *ngIf="match && match.profilePic" src="{{match.profilePic}}">
+                </div>
+            </div>
+            <mat-card-footer class="theme-card-footer">
+                <mat-card-title class="theme-card-title">
+                {{ match.displayName }}&nbsp;{{ match.age }}
+                <span *ngIf="match.gender === 'female'">&#9792;</span>
+                <span *ngIf="match.gender === 'male'">&#9794;</span>
+                </mat-card-title>
+                <mat-card-subtitle>
+                {{match.aboutMe}}
+                </mat-card-subtitle>
+            </mat-card-footer>
+        </mat-card>
+        <p class="sentence">
+            Interested in getting to know 
+            <span *ngIf="match.gender === 'female'">her</span>
+            <span *ngIf="match.gender === 'male'">him</span> 
+            better?
+        </p>
+        <div class="theme-button-container">
+            <div class="button-wrapper">
+            <button mat-raised-button color="primary" type="button" (click)="yes()">Yes</button>
+            </div>
+            <div class="button-wrapper">
+            <button mat-raised-button color="primary" type="button" (click)="pass()">No</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+    
+  
+  
+  
+      
+        
+

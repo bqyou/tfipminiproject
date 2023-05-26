@@ -14,13 +14,28 @@ public interface UserProfileRepository extends JpaRepository<UserProfile, Intege
 
     Optional<UserProfile> findByUserId(Integer userId);
 
+    // @Query(value = "SELECT * FROM profiles " +
+    //     "WHERE gender = :gender " +
+    //     "AND preference = :preference " +
+    //     "AND user_id NOT IN (:userIds) " +
+    //     "ORDER BY RAND() " +
+    //     "LIMIT :limit", nativeQuery = true)
+    // List<UserProfile> findByGenderAndPreferenceAndUserIdNotIn(String gender, List<String> preference, List<Integer> userIds, Integer limit);
+
     @Query(value = "SELECT * FROM profiles " +
         "WHERE gender = :gender " +
-        "AND preference = :preference " +
-        "AND user_id NOT IN (:userIds) " +
+        "AND (preference = :preference OR preference = 'either') " +
+        "AND user_id NOT IN :userIds " +
         "ORDER BY RAND() " +
         "LIMIT :limit", nativeQuery = true)
-    List<UserProfile> findByGenderAndPreferenceAndUserIdNotIn(String gender, String preference, List<Integer> userIds, Integer limit);
+    List<UserProfile> findByGenderAndPreferenceAndUserIdNotIn(String gender,  String preference, List<Integer> userIds, Integer limit);
+
+    @Query(value = "SELECT * FROM profiles " +
+        "WHERE (preference = :preference OR preference = 'either')" +
+        "AND user_id NOT IN :userIds " +
+        "ORDER BY RAND() " +
+        "LIMIT :limit", nativeQuery = true)
+    List<UserProfile> findByPreferenceAndUserIdNotIn(String preference, List<Integer> userIds, Integer limit);  
 
     List<UserProfile> findByUserIdIn(List<Integer> userIds);
 }

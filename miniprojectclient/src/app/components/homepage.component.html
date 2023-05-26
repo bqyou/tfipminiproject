@@ -1,0 +1,59 @@
+<div class="loading" *ngIf="isLoading">
+  <div>
+    <mat-spinner></mat-spinner>
+    <p> Please wait while the page is loading...</p>
+  </div>
+</div>
+<body *ngIf="!isLoading">
+    <mat-toolbar color="primary">
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu" matTooltip="Menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="editProfile()">Edit Profile</button>
+        <button mat-menu-item (click)="changePassword()">Change Password</button>
+        <button mat-menu-item (click)="startSwiping()">Find a friend</button>
+      </mat-menu>
+      <span>FiiNDER</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with logout icon" matTooltip="Log out"
+        (click)="logout()">
+        <mat-icon>logout</mat-icon>
+      </button>
+    </mat-toolbar>
+
+  <div >
+<div class="homepage-container">
+    <h3>Hello, {{myProfile?.displayName}}</h3>
+    <h3>You have {{swipes}} finds remaining! </h3>
+    <h3>Buy more at
+    <button mat-raised-button color="warn" type="button" (click)="buySwipes()" matTooltip="Buy now">$1 for 10 FINDS</button>
+    </h3>      
+    <br> 
+       
+</div>
+<div class ="matches-container">
+    <h3>Matches</h3>
+    <span *ngIf="textMatches?.length == 0">You have no matches...</span> 
+    <table>
+        <tr *ngFor="let user of textMatches; let i = index">
+          
+          <td>
+            <button class="match" type="button" (click)="goTextWindow(i)" matTooltip="Chat with {{user?.displayName}}">{{user?.displayName}}</button>
+          </td>
+          <td>
+            <div class="image-container">
+              <div class="image-wrapper">
+                <img [src]="user?.profilePic">
+              </div>
+            </div>
+          </td>
+        </tr>
+    </table>
+    <div style="text-align: center;">
+      <button mat-raised-button color="primary" type="button" (click)="startSwiping()">FIND a friend today! &#10084;</button>
+      </div>
+</div>
+
+</div>
+</body>

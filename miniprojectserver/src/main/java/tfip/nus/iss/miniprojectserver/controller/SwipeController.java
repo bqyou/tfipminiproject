@@ -1,5 +1,7 @@
 package tfip.nus.iss.miniprojectserver.controller;
 
+import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +37,8 @@ public class SwipeController {
 
     @Autowired
     private Utils utils;
+
+    private static final String BASE64_PREFIX_DECODER = "data:%s;base64,";
 
     @Autowired
     private SwipeStatusRepository swipeStatusRepository;
@@ -101,9 +105,18 @@ public class SwipeController {
         List<UserProfile> listOfMatchedProfiles = userProfileService.findByUserIds(listOfMatchedIds);
         JsonArrayBuilder arrBuilder = Json.createArrayBuilder();
         for (UserProfile profile: listOfMatchedProfiles){
+            byte[] imageData = null;
+            try {
+                InputStream inputStream = profile.getProfilePic().getBinaryStream();
+                imageData = inputStream.readAllBytes();            
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            String encodedString = Base64.getEncoder().encodeToString(imageData);
             JsonObject json = Json.createObjectBuilder()
                                 .add("id", profile.getUser_id())
                                 .add("displayName", profile.getDisplayName())
+                                .add("profilePic", BASE64_PREFIX_DECODER.formatted(profile.getImageType()) + encodedString)
                                 .build();
             arrBuilder.add(json);
         }
