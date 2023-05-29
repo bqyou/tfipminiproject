@@ -10,5 +10,7 @@ public interface YesTableRepository extends JpaRepository<YesTable, Integer> {
     
     List<YesTable> findByActiveUserId(Integer activeUserId);
 
+    List<YesTable> findByMatchId(Integer matchId);
+
     YesTable findByActiveUserIdAndMatchId(Integer activeUserId, Integer matchId);
 }
